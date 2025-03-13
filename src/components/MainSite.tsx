@@ -1,11 +1,12 @@
 // @ts-ignore
 import React from 'react';
+import Testtermin from "./Testtermin";
 
 const MainSite: React.FC = () => {
     return (
-        // @ts-ignore
         <>
-            <h1>Klassen Organisations App</h1>
+            <Testtermin fach={"Mathe"} datum={new Date("13.03.2025")}></Testtermin>
+
         </>
     );
 }
