@@ -15,22 +15,22 @@ const testtermine: TestterminData[] = [
 
 const TestterminTable: React.FC = () => {
     return (
-        <>
-            <table className="table">
+        <div className="container-fluid">
+            <table className="table w-100">
                 <thead>
-                    <tr>
-                        <th>Fach</th>
-                        <th>Datum</th>
-                        <th>Stoff</th>
-                    </tr>
+                <tr>
+                    <th>Fach</th>
+                    <th>Datum</th>
+                    <th>Stoff</th>
+                </tr>
                 </thead>
                 <tbody>
-                {testtermine.map((test, index) => (
-                    <Testtermin datum={test.datum} fach={test.fach} stoff={test.stoff} index={index}/>
+                {testtermine.map((test, index: number) => (
+                    <Testtermin key={index} datum={test.datum} fach={test.fach} stoff={test.stoff} index={index}/>
                 ))}
                 </tbody>
             </table>
-        </>
+        </div>
     );
 };
 
