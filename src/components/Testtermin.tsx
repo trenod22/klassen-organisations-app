@@ -3,14 +3,17 @@ import React from 'react';
 type TestterminProps = {
     fach?: string;
     datum: Date;
+    stoff: string;
+    index: number;
 };
 
-const Testtermin: React.FC<TestterminProps> = ({ fach = "Kein Fach", datum }) => {
+const Testtermin: React.FC<TestterminProps> = ({ fach = "Kein Fach", datum, stoff, index }) => {
     return (
-        <div className="bg-white shadow-lg rounded-2xl p-4 text-center w-64">
-            <h2 className="text-xl font-semibold text-gray-800">{fach}</h2>
-            <p className="text-gray-500 text-sm mt-2">{datum.toLocaleDateString()}</p>
-        </div>
+        <tr key={index}>
+            <td>{fach}</td>
+            <td>{datum.toLocaleDateString()}</td>
+            <td>{stoff}</td>
+        </tr>
     );
 };
 

@@ -1,12 +1,10 @@
-// @ts-ignore
 import React from 'react';
-import Testtermin from "./Testtermin";
+import TestterminTable from "./TestterminTable";
 
 const MainSite: React.FC = () => {
     return (
         <>
-            <Testtermin fach={"Mathe"} datum={new Date("13.03.2025")}></Testtermin>
-
+            <TestterminTable/>
         </>
     );
 }
