@@ -1,9 +1,7 @@
-// @ts-ignore
-import React from 'react';
+import * as React from "react";
 
 const MainSite: React.FC = () => {
     return (
-        // @ts-ignore
         <>
             <h1>Klassen Organisations App</h1>
         </>

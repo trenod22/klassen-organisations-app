@@ -1,14 +1,13 @@
-import { useState } from 'react'
 import MainSite from "./components/MainSite.js";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import TimeTable from "./components/TimeTable.js";
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <MainSite/>
-    </>
+      <>
+          <MainSite/>
+          <TimeTable/>
+      </>
   )
 }
 
