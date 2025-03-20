@@ -46,7 +46,7 @@ const TestterminTable: React.FC = () => {
                 </thead>
                 <tbody>
                 {testtermine
-                    .filter(test => calculateDaysRemaining(test.datum) < 11)
+                    .filter(test => calculateDaysRemaining(test.datum) <= 10)
                     .map((test, index: number) => (
                         <Testtermin
                             key={index}
