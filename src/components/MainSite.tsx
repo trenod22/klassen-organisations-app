@@ -1,9 +1,10 @@
-import * as React from "react";
+import React from 'react';
+import TestterminTable from "./TestterminTable";
 
 const MainSite: React.FC = () => {
     return (
         <>
-            <h1>Klassen Organisations App</h1>
+            <TestterminTable/>
         </>
     );
 }
