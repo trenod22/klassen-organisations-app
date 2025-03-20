@@ -18,7 +18,7 @@ const loadFromLocalStorage = (): TestterminData[] => {
     return initialTesttermine;
 };
 
-//Noch nicht löschen was man selbst gemacht hat, local storage reset noch und show all fürs nächste mal!!!
+//Noch nicht löschen was man selbst gemacht hat, local storage reset noch und show all und sortieren fürs nächste mal!!!
 
 const initialTesttermine: TestterminData[] = [
     { fach: "AM", datum: new Date(2025, 2, 25, 10, 45), stoff: "Vectoren" },
