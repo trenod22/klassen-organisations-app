@@ -7,23 +7,27 @@ type TestterminData = {
     stoff: string;
 };
 
+
+//bearbeiten funktioniert erst nach einmaligem reloaden
+
 const localStorageKey = "testtermine";
 
 const loadFromLocalStorage = (): TestterminData[] => {
     const data = localStorage.getItem(localStorageKey);
     if (data) {
         const parsedData = JSON.parse(data).map((item: any) => ({ ...item, datum: new Date(item.datum) }));
-        return parsedData.length > 0 ? parsedData : initialTesttermine;
+        return parsedData.length > 0
+            //@ts-ignore
+            ? parsedData.sort((a, b) => a.datum.getTime() - b.datum.getTime()) // Sortieren
+            : initialTesttermine;
     }
-    return initialTesttermine;
+    return initialTesttermine.sort((a, b) => a.datum.getTime() - b.datum.getTime());
 };
-
-//Noch nicht löschen was man selbst gemacht hat, local storage reset noch und show all und sortieren fürs nächste mal!!!
 
 const initialTesttermine: TestterminData[] = [
     { fach: "AM", datum: new Date(2025, 2, 25, 10, 45), stoff: "Vectoren" },
     { fach: "E1", datum: new Date(2025, 2, 27, 13, 15), stoff: "Leaflet" },
-    { fach: "POS1", datum: new Date(2025, 3, 3, 10, 45), stoff: "Threads" },
+    { fach: "POS1", datum: new Date(2025, 3, 3, 10, 45), stoff: "Threads, Producer-Consumer Problem" },
     { fach: "SYP1P", datum: new Date(2025, 3, 7, 8, 50), stoff: "???" },
     { fach: "DBI1U", datum: new Date(2025, 3, 9, 10, 45), stoff: "???" },
     { fach: "WMC_1U", datum: new Date(2025, 3, 23, 8, 0), stoff: "React" },
@@ -41,7 +45,11 @@ const initialTesttermine: TestterminData[] = [
 
 const calculateDaysRemaining = (testDate: Date) => {
     const today = new Date();
-    const timeDiff = testDate.getTime() - today.getTime();
+    today.setHours(0, 0, 0, 0);
+    const testDateOnly = new Date(testDate);
+    testDateOnly.setHours(0, 0, 0, 0);
+
+    const timeDiff = testDateOnly.getTime() - today.getTime();
     return Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
 };
 
@@ -50,15 +58,33 @@ const TestterminTable: React.FC = () => {
     const [newFach, setNewFach] = useState("");
     const [newDatum, setNewDatum] = useState("");
     const [newStoff, setNewStoff] = useState("");
+    const [showAll, setShowAll] = useState(false);
 
     useEffect(() => {
         localStorage.setItem(localStorageKey, JSON.stringify(testtermine));
     }, [testtermine]);
 
+    const resetLocalStorage = () => {
+        localStorage.removeItem(localStorageKey);
+        setTesttermine([]);
+        setTimeout(() => {
+            setTesttermine([...initialTesttermine]);
+        }, 0);
+    };
+
     const addTesttermin = () => {
         if (!newFach || !newDatum || !newStoff) return;
+
+        const parsedDate = new Date(newDatum);
+        if (isNaN(parsedDate.getTime())) return;
+
         const newEntry = { fach: newFach, datum: new Date(newDatum), stoff: newStoff };
-        setTesttermine([...testtermine, newEntry]);
+        // Füge den neuen Termin hinzu und sortiere direkt nach dem Hinzufügen
+        setTesttermine((prevTests) => {
+            const updatedTests = [...prevTests, newEntry];
+            updatedTests.sort((a, b) => a.datum.getTime() - b.datum.getTime());
+            return updatedTests;
+        });
         setNewFach("");
         setNewDatum("");
         setNewStoff("");
@@ -70,9 +96,21 @@ const TestterminTable: React.FC = () => {
     };
 
     const editTesttermin = (index: number, updatedTest: TestterminData) => {
-        const updatedList = testtermine.map((test, i) => (i === index ? updatedTest : test));
-        setTesttermine(updatedList);
+        setTesttermine((prevTests) => {
+            const updatedList = prevTests.map((test, i) =>
+                i === index ? { ...test, fach: updatedTest.fach, datum: updatedTest.datum, stoff: updatedTest.stoff } : test
+            );
+
+            // Sofortiger Setzen der neuen Werte
+            localStorage.setItem(localStorageKey, JSON.stringify(updatedList));
+
+            // Sortieren nach der Aktualisierung
+            updatedList.sort((a, b) => a.datum.getTime() - b.datum.getTime());
+
+            return updatedList;
+        });
     };
+
 
     return (
         <div className="container-fluid">
@@ -88,7 +126,7 @@ const TestterminTable: React.FC = () => {
                 </thead>
                 <tbody>
                 {testtermine
-                    .filter(test => calculateDaysRemaining(test.datum) <= 10)
+                    .filter(test => showAll || calculateDaysRemaining(test.datum) <= 10 && calculateDaysRemaining(test.datum) >= -2)
                     .map((test, index) => (
                         <Testtermin
                             key={index}
@@ -109,6 +147,12 @@ const TestterminTable: React.FC = () => {
                 </tr>
                 </tbody>
             </table>
+            <div style={{ display: "flex", gap: "10px", marginBottom: "10px" }}>
+                <button onClick={() => setShowAll(!showAll)}>
+                    {showAll ? "Nur Nächste 10 Tage" : "Alle Anzeigen"}
+                </button>
+                <button onClick={resetLocalStorage}>Reset Local Storage</button>
+            </div>
         </div>
     );
 };
