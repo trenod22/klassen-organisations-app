@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 type TestterminProps = {
     fach?: string;
@@ -21,6 +21,13 @@ const Testtermin: React.FC<TestterminProps> = ({ fach = "Kein Fach", datum, stof
         setIsEditing(false);
     };
 
+    const pressEdit = () => {
+        setIsEditing(true);
+        setEditedFach(fach);
+        setEditedDatum(datum.toISOString().split('T')[0]);
+        setEditedStoff(stoff)
+    }
+
     return (
         <tr>
             {isEditing ? (
@@ -41,7 +48,7 @@ const Testtermin: React.FC<TestterminProps> = ({ fach = "Kein Fach", datum, stof
                     <td>{stoff}</td>
                     <td>{days_remaining}</td>
                     <td>
-                        <button onClick={() => setIsEditing(true)}>Bearbeiten</button>
+                        <button onClick={() => pressEdit()}>Bearbeiten</button>
                         <button onClick={onDelete}>Löschen</button>
                     </td>
                 </>

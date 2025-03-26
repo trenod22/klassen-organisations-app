@@ -18,9 +18,10 @@ const loadFromLocalStorage = (): TestterminData[] => {
         const parsedData = JSON.parse(data).map((item: any) => ({ ...item, datum: new Date(item.datum) }));
         return parsedData.length > 0
             //@ts-ignore
-            ? parsedData.sort((a, b) => a.datum.getTime() - b.datum.getTime()) // Sortieren
+            ? parsedData.sort((a, b) => a.datum.getTime() - b.datum.getTime())
             : initialTesttermine;
     }
+
     return initialTesttermine.sort((a, b) => a.datum.getTime() - b.datum.getTime());
 };
 
@@ -78,17 +79,25 @@ const TestterminTable: React.FC = () => {
         const parsedDate = new Date(newDatum);
         if (isNaN(parsedDate.getTime())) return;
 
-        const newEntry = { fach: newFach, datum: new Date(newDatum), stoff: newStoff };
-        // Füge den neuen Termin hinzu und sortiere direkt nach dem Hinzufügen
+        const newEntry = { fach: newFach, datum: parsedDate, stoff: newStoff };
+
         setTesttermine((prevTests) => {
             const updatedTests = [...prevTests, newEntry];
             updatedTests.sort((a, b) => a.datum.getTime() - b.datum.getTime());
+
+            // Speichern im localStorage als Array von Objekten, die das Datum als Date-Objekt enthalten
+            localStorage.setItem(localStorageKey, JSON.stringify(updatedTests));
+
             return updatedTests;
         });
+
         setNewFach("");
         setNewDatum("");
         setNewStoff("");
     };
+
+
+
 
     const deleteTesttermin = (index: number) => {
         const updatedList = testtermine.filter((_, i) => i !== index);
@@ -97,6 +106,7 @@ const TestterminTable: React.FC = () => {
 
     const editTesttermin = (index: number, updatedTest: TestterminData) => {
         setTesttermine((prevTests) => {
+
             const updatedList = prevTests.map((test, i) =>
                 i === index ? { ...test, fach: updatedTest.fach, datum: updatedTest.datum, stoff: updatedTest.stoff } : test
             );
