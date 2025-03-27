@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Testtermin from "./Testtermin";
+import "./TestterminTable.css";
 
 type TestterminData = {
     fach: string;

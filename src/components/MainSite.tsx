@@ -1,5 +1,5 @@
 import React from 'react';
-import TestterminTable from "./TestterminTable";
+import TestterminTable from "./testermine/TestterminTable";
 
 const MainSite: React.FC = () => {
     return (
