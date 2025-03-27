@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import "./Testtermin.css";
+import "./css/Testtermin.css";
 type TestterminProps = {
     fach?: string;
     datum: Date;
@@ -49,6 +49,7 @@ const Testtermin: React.FC<TestterminProps> = ({ fach = "Kein Fach", datum, stof
                     <td>{days_remaining}</td>
                     <td>
                         <button onClick={() => pressEdit()}>Bearbeiten</button>
+                        <span> </span>
                         <button onClick={onDelete}>Löschen</button>
                     </td>
                 </>
