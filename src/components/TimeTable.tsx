@@ -2,32 +2,39 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-const days = ["Woche", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag", "Sonntag"];
+const days = ["Woche", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag"];
 
 const TimeTable: React.FC = () => {
     const [toggled, setToggled] = useState<boolean>(false);
     const [schedule, setSchedule] = useState<string[][]>([]);
-    const [selectedDay, setSelectedDay] = useState<string>("Woche"); // Changed to "Woche"
+    const [selectedDay, setSelectedDay] = useState<string>("Woche");
+
+    const defaultSchedule = [
+        ["AM - WL", "DBI_1 - LR", "WMC_1U - SF,MS", "BWMR - HB", "LOAL - PD"],
+        ["SYP_1P - FA", "NW2P - FR", "WMC_1U - SF,MS", "BWMB - HB", "RK - WS"],
+        ["NSCS_1 - GU", "GES - HR", "BWMB - HB", "AM - WL", "BWMR - HB"],
+        ["POS1 - SC", "AM - WL", "DBI1U - MF,LR", "POS1U - SC,RI", "BWMR - HB"],
+        ["POS1 - SC", "GEO - HX", "NW2C - CL", "POS1U - SC,RI", "-----"],
+        ["D - HU", "-----", "E1 - HU", "-----", "NW2C - CL"],
+        ["-----", "NSCS_1U - GU,WB", "-----", "E1 - HU", "BESP - SD"],
+        ["-----", "NSCS_1U", "-----", "E1 - HU", "BESP - SD"],
+        ["-----", "NSCS_1U", "-----", "SYP1 - SV", "D - HU"],
+        ["-----", "NSCS_1U", "-----", "SYP1 - SV", "-----"]
+    ]
 
     useEffect(() => {
         const savedSchedule = localStorage.getItem("userSchedule");
         if (savedSchedule) {
             setSchedule(JSON.parse(savedSchedule));
         } else {
-            setSchedule([ // default schedule
-                ["AM - WL", "DBI_1 - LR", "WMC_1U - SF,MS", "BWMR - HB", "LOAL - PD", "-----", "-----"],
-                ["SYP_1P - FA", "NW2P - FR", "WMC_1U - SF,MS", "BWMB - HB", "RK - WS", "-----", "-----"],
-                ["NSCS_1 - GU", "GES - HR", "BWMB - HB", "AM - WL", "BWMR - HB", "-----", "-----"],
-                ["POS1 - SC", "AM - WL", "DBI1U - MF,LR", "POS1U - SC,RI", "BWMR - HB", "-----", "-----"],
-                ["POS1 - SC", "GEO - HX", "NW2C - CL", "POS1U - SC,RI", "-----", "-----", "-----"],
-                ["D - HU", "-----", "E1 - HU", "-----", "NW2C - CL", "-----", "-----"],
-                ["-----", "NSCS_1U - GU,WB", "-----", "E1 - HU", "BESP - SD", "-----", "-----"],
-                ["-----", "NSCS_1U", "-----", "E1 - HU", "BESP - SD", "-----", "-----"],
-                ["-----", "NSCS_1U", "-----", "SYP1 - SV", "D - HU", "-----", "-----"],
-                ["-----", "NSCS_1U", "-----", "SYP1 - SV", "-----", "-----", "-----"]
-            ]);
+            setSchedule(defaultSchedule);
         }
     }, []);
+
+    const resetTimetable = () => {
+        setSchedule(defaultSchedule);
+        localStorage.setItem("userSchedule", JSON.stringify(defaultSchedule));
+    }
 
     const handleEdit = (rowIndex: number, colIndex: number, value: string) => {
         const newSchedule = [...schedule];
@@ -64,6 +71,13 @@ const TimeTable: React.FC = () => {
                                 <option key={day} value={day}>{day}</option>
                             ))}
                         </select>
+                        <button
+                            type="button"
+                            className="btn btn-secondary mb-3"
+                            onClick={() => resetTimetable()}
+                        >
+                            Stundentplan zurücksetzen
+                        </button>
 
                         <motion.table
                             className={`table table-striped table-bordered table-hover bg-light shadow-sm rounded ${selectedDay !== "Woche" ? 'w-25' : ''}`}
