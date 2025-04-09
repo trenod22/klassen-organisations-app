@@ -1,7 +1,6 @@
 import MainSite from "./components/MainSite.js";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import TimeTable from "./components/TimeTable/TimeTable.tsx";
-import TimeTable from "./components/TimeTable.js";
 import {Card} from "react-bootstrap";
 import Calendar from "./components/Calendar.js";
 
