@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Testtermin from "./Testtermin";
+import "./css/TestterminTable.css";
 
 type TestterminData = {
     fach: string;
@@ -7,8 +8,6 @@ type TestterminData = {
     stoff: string;
 };
 
-
-//bearbeiten funktioniert erst nach einmaligem reloaden
 
 const localStorageKey = "testtermine";
 

@@ -1,6 +1,8 @@
+import React from "react";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import "./TimeTable.css";
 
 const days = ["Woche", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag"];
 
