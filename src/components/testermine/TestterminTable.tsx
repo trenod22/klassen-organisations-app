@@ -28,7 +28,7 @@ const initialTesttermine: TestterminData[] = [
     { fach: "E1", datum: new Date(2025, 2, 27), stoff: "Leaflet" },
     { fach: "POS1", datum: new Date(2025, 3, 3), stoff: "Threads, Producer-Consumer Problem" },
     { fach: "SYP1P", datum: new Date(2025, 3, 7), stoff: "User story, Sprint Planning" },
-    { fach: "DBI1U", datum: new Date(2025, 3, 9), stoff: "Erd" },
+    { fach: "DBI1U", datum: new Date(2025, 3, 9), stoff: "ERD" },
     { fach: "WMC_1U", datum: new Date(2025, 3, 23), stoff: "React" },
     { fach: "NWC2", datum: new Date(2025, 3, 25), stoff: "???" },
     { fach: "E1", datum: new Date(2025, 3, 28), stoff: "???" },
