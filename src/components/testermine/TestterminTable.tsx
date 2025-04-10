@@ -24,22 +24,22 @@ const loadFromLocalStorage = (): TestterminData[] => {
 };
 
 const initialTesttermine: TestterminData[] = [
-    { fach: "AM", datum: new Date(2025, 2, 25, 0, 0), stoff: "Vectoren" },
-    { fach: "E1", datum: new Date(2025, 2, 27, 0, 0), stoff: "Leaflet" },
-    { fach: "POS1", datum: new Date(2025, 3, 3, 0, 0), stoff: "Threads, Producer-Consumer Problem" },
-    { fach: "SYP1P", datum: new Date(2025, 3, 7, 0, 0), stoff: "???" },
-    { fach: "DBI1U", datum: new Date(2025, 3, 9, 0, 0), stoff: "???" },
-    { fach: "WMC_1U", datum: new Date(2025, 3, 23, 0, 0), stoff: "React" },
-    { fach: "NWC2", datum: new Date(2025, 3, 25, 0, 0), stoff: "???" },
-    { fach: "E1", datum: new Date(2025, 3, 28, 0, 0), stoff: "???" },
-    { fach: "NWP2", datum: new Date(2025, 3, 29, 0, 0), stoff: "???" },
-    { fach: "GES", datum: new Date(2025, 4, 6, 0, 0), stoff: "???" },
-    { fach: "BWMR", datum: new Date(2025, 4, 8, 0, 0), stoff: "???" },
-    { fach: "GEO", datum: new Date(2025, 4, 20, 0, 0), stoff: "???" },
-    { fach: "WMC_1U", datum: new Date(2025, 4, 21, 0, 0), stoff: "???" },
-    { fach: "NSCS_1", datum: new Date(2025, 4, 26, 0, 0), stoff: "???" },
-    { fach: "AM", datum: new Date(2025, 4, 28, 0, 0), stoff: "???" },
-    { fach: "DBI1U", datum: new Date(2025, 5, 4, 0, 0), stoff: "???" },
+    { fach: "AM", datum: new Date(2025, 2, 25), stoff: "Vectoren" },
+    { fach: "E1", datum: new Date(2025, 2, 27), stoff: "Leaflet" },
+    { fach: "POS1", datum: new Date(2025, 3, 3), stoff: "Threads, Producer-Consumer Problem" },
+    { fach: "SYP1P", datum: new Date(2025, 3, 7), stoff: "???" },
+    { fach: "DBI1U", datum: new Date(2025, 3, 9), stoff: "???" },
+    { fach: "WMC_1U", datum: new Date(2025, 3, 23), stoff: "React" },
+    { fach: "NWC2", datum: new Date(2025, 3, 25), stoff: "???" },
+    { fach: "E1", datum: new Date(2025, 3, 28), stoff: "???" },
+    { fach: "NWP2", datum: new Date(2025, 3, 29), stoff: "???" },
+    { fach: "GES", datum: new Date(2025, 4, 6), stoff: "???" },
+    { fach: "BWMR", datum: new Date(2025, 4, 8), stoff: "???" },
+    { fach: "GEO", datum: new Date(2025, 4, 20), stoff: "???" },
+    { fach: "WMC_1U", datum: new Date(2025, 4, 21), stoff: "???" },
+    { fach: "NSCS_1", datum: new Date(2025, 4, 26), stoff: "???" },
+    { fach: "AM", datum: new Date(2025, 4, 28, 0), stoff: "???" },
+    { fach: "DBI1U", datum: new Date(2025, 5, 4), stoff: "???" },
 ];
 
 const calculateDaysRemaining = (testDate: Date) => {

@@ -21,21 +21,26 @@ const Testtermin: React.FC<TestterminProps> = ({ fach = "Kein Fach", datum, stof
 
     // Speichern der aktuellen Bearbeitungsdaten
     const handleSave = () => {
-        // Hier wird der aktuelle Zustand direkt verwendet, um die neuesten Änderungen zu übergeben
+        const newDate = new Date(editedDatum);
+        // Setze die Zeit auf 00:00 UTC, um die Zeitkomponente zu entfernen
+        newDate.setUTCHours(0, 0, 0, 0); // UTC verwenden, um Zeitverschiebung zu vermeiden
+
         onEdit(
             { fach, datum, stoff },  // Die ursprünglichen Daten
-            { fach: editedFach, datum: new Date(editedDatum), stoff: editedStoff }  // Die bearbeiteten Daten
+            { fach: editedFach, datum: newDate, stoff: editedStoff }  // Die bearbeiteten Daten
         );
         setIsEditing(false);
     };
+
 
     // Bearbeitungsmodus aktivieren
     const pressEdit = () => {
         setIsEditing(true);
         setEditedFach(fach);  // Ursprüngliche Daten zum Bearbeiten setzen
-        setEditedDatum(datum.toISOString().split('T')[0]);
+        setEditedDatum(datum.toLocaleDateString("en-CA"));  // Local Date String (ISO 8601 Format)
         setEditedStoff(stoff);
     };
+
 
     return (
         <tr>
