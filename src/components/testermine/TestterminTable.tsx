@@ -145,7 +145,7 @@ const TestterminTable: React.FC = () => {
                     <th>Fach</th>
                     <th>Datum</th>
                     <th>Stoff</th>
-                    <th>Days Remaining</th>
+                    <th>Tage verbleibend</th>
                     <th>Aktionen</th>
                 </tr>
                 </thead>
