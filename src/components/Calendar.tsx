@@ -181,6 +181,7 @@ const Calendar: React.FC = () => {
                         <motion.table
                             key={`${month}-${year}`}
                             className="table table-bordered bg-white w-100"
+                            style={{ tableLayout: "fixed" }}
                             custom={direction}
                             variants={variants}
                             initial="enter"
