@@ -1,32 +1,41 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import "./css/Testtermin.css";
+
 type TestterminProps = {
     fach?: string;
     datum: Date;
     stoff: string;
-    index: number;
     days_remaining: number;
-    onDelete: () => void;
-    onEdit: (updatedTest: { fach: string; datum: Date; stoff: string }) => void;
+    onDelete: (oldTest: { fach: string; datum: Date; stoff: string }) => void;
+    onEdit: (
+        oldTest: { fach: string; datum: Date; stoff: string },
+        updatedTest: { fach: string; datum: Date; stoff: string }
+    ) => void;
 };
 
-const Testtermin: React.FC<TestterminProps> = ({ fach = "Kein Fach", datum, stoff, index, days_remaining, onDelete, onEdit }) => {
+const Testtermin: React.FC<TestterminProps> = ({ fach = "Kein Fach", datum, stoff, days_remaining, onDelete, onEdit }) => {
     const [isEditing, setIsEditing] = useState(false);
     const [editedFach, setEditedFach] = useState(fach);
     const [editedDatum, setEditedDatum] = useState(datum.toISOString().split('T')[0]);
     const [editedStoff, setEditedStoff] = useState(stoff);
 
+    // Speichern der aktuellen Bearbeitungsdaten
     const handleSave = () => {
-        onEdit({ fach: editedFach, datum: new Date(editedDatum), stoff: editedStoff });
+        // Hier wird der aktuelle Zustand direkt verwendet, um die neuesten Änderungen zu übergeben
+        onEdit(
+            { fach, datum, stoff },  // Die ursprünglichen Daten
+            { fach: editedFach, datum: new Date(editedDatum), stoff: editedStoff }  // Die bearbeiteten Daten
+        );
         setIsEditing(false);
     };
 
+    // Bearbeitungsmodus aktivieren
     const pressEdit = () => {
         setIsEditing(true);
-        setEditedFach(fach);
+        setEditedFach(fach);  // Ursprüngliche Daten zum Bearbeiten setzen
         setEditedDatum(datum.toISOString().split('T')[0]);
-        setEditedStoff(stoff)
-    }
+        setEditedStoff(stoff);
+    };
 
     return (
         <tr>
@@ -50,7 +59,7 @@ const Testtermin: React.FC<TestterminProps> = ({ fach = "Kein Fach", datum, stof
                     <td>
                         <button onClick={() => pressEdit()}>Bearbeiten</button>
                         <span> </span>
-                        <button onClick={onDelete}>Löschen</button>
+                        <button onClick={() => onDelete({ fach, datum, stoff })}>Löschen</button>
                     </td>
                 </>
             )}

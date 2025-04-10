@@ -24,22 +24,22 @@ const loadFromLocalStorage = (): TestterminData[] => {
 };
 
 const initialTesttermine: TestterminData[] = [
-    { fach: "AM", datum: new Date(2025, 2, 25, 10, 45), stoff: "Vectoren" },
-    { fach: "E1", datum: new Date(2025, 2, 27, 13, 15), stoff: "Leaflet" },
-    { fach: "POS1", datum: new Date(2025, 3, 3, 10, 45), stoff: "Threads, Producer-Consumer Problem" },
-    { fach: "SYP1P", datum: new Date(2025, 3, 7, 8, 50), stoff: "???" },
-    { fach: "DBI1U", datum: new Date(2025, 3, 9, 10, 45), stoff: "???" },
-    { fach: "WMC_1U", datum: new Date(2025, 3, 23, 8, 0), stoff: "React" },
-    { fach: "NWC2", datum: new Date(2025, 3, 25, 12, 25), stoff: "???" },
-    { fach: "E1", datum: new Date(2025, 3, 28, 12, 25), stoff: "???" },
-    { fach: "NWP2", datum: new Date(2025, 3, 29, 8, 50), stoff: "???" },
-    { fach: "GES", datum: new Date(2025, 4, 6, 9, 40), stoff: "???" },
-    { fach: "BWMR", datum: new Date(2025, 4, 8, 8, 0), stoff: "???" },
-    { fach: "GEO", datum: new Date(2025, 4, 20, 11, 35), stoff: "???" },
-    { fach: "WMC_1U", datum: new Date(2025, 4, 21, 8, 0), stoff: "???" },
-    { fach: "NSCS_1", datum: new Date(2025, 4, 26, 9, 40), stoff: "???" },
-    { fach: "AM", datum: new Date(2025, 4, 28, 9, 40), stoff: "???" },
-    { fach: "DBI1U", datum: new Date(2025, 5, 4, 10, 45), stoff: "???" },
+    { fach: "AM", datum: new Date(2025, 2, 25, 0, 0), stoff: "Vectoren" },
+    { fach: "E1", datum: new Date(2025, 2, 27, 0, 0), stoff: "Leaflet" },
+    { fach: "POS1", datum: new Date(2025, 3, 3, 0, 0), stoff: "Threads, Producer-Consumer Problem" },
+    { fach: "SYP1P", datum: new Date(2025, 3, 7, 0, 0), stoff: "???" },
+    { fach: "DBI1U", datum: new Date(2025, 3, 9, 0, 0), stoff: "???" },
+    { fach: "WMC_1U", datum: new Date(2025, 3, 23, 0, 0), stoff: "React" },
+    { fach: "NWC2", datum: new Date(2025, 3, 25, 0, 0), stoff: "???" },
+    { fach: "E1", datum: new Date(2025, 3, 28, 0, 0), stoff: "???" },
+    { fach: "NWP2", datum: new Date(2025, 3, 29, 0, 0), stoff: "???" },
+    { fach: "GES", datum: new Date(2025, 4, 6, 0, 0), stoff: "???" },
+    { fach: "BWMR", datum: new Date(2025, 4, 8, 0, 0), stoff: "???" },
+    { fach: "GEO", datum: new Date(2025, 4, 20, 0, 0), stoff: "???" },
+    { fach: "WMC_1U", datum: new Date(2025, 4, 21, 0, 0), stoff: "???" },
+    { fach: "NSCS_1", datum: new Date(2025, 4, 26, 0, 0), stoff: "???" },
+    { fach: "AM", datum: new Date(2025, 4, 28, 0, 0), stoff: "???" },
+    { fach: "DBI1U", datum: new Date(2025, 5, 4, 0, 0), stoff: "???" },
 ];
 
 const calculateDaysRemaining = (testDate: Date) => {
@@ -96,28 +96,46 @@ const TestterminTable: React.FC = () => {
         setNewStoff("");
     };
 
-    const deleteTesttermin = (index: number) => {
-        const updatedList = testtermine.filter((_, i) => i !== index);
+    const deleteTesttermin = (testToDelete: TestterminData) => {
+        const updatedList = testtermine.filter(test =>
+            !(test.fach === testToDelete.fach &&
+                test.stoff === testToDelete.stoff &&
+                test.datum.getTime() === testToDelete.datum.getTime())
+        );
         setTesttermine(updatedList);
     };
 
-    const editTesttermin = (index: number, updatedTest: TestterminData) => {
+
+    const editTesttermin = (oldTest: TestterminData, updatedTest: TestterminData) => {
         setTesttermine((prevTests) => {
 
-            const updatedList = prevTests.map((test, i) =>
-                i === index ? { ...test, fach: updatedTest.fach, datum: updatedTest.datum, stoff: updatedTest.stoff } : test
-            );
 
-            // Sofortiger Setzen der neuen Werte
+
+            const updatedList = prevTests.map((test) => {
+                const isSameTest =
+                    test.fach === oldTest.fach &&
+                    test.stoff === oldTest.stoff &&
+                    test.datum.getTime() === oldTest.datum.getTime();
+
+                if (isSameTest){
+                    console.log(test.datum + " Original")
+                    console.log(updatedTest.datum+ " New")
+                }
+
+                return isSameTest
+                    ? { ...test, fach: updatedTest.fach, datum: updatedTest.datum, stoff: updatedTest.stoff }
+                    : test;
+            });
+
             localStorage.setItem(localStorageKey, JSON.stringify(updatedList));
             window.dispatchEvent(new Event("updateTesttermine"));
 
-            // Sortieren nach der Aktualisierung
             updatedList.sort((a, b) => a.datum.getTime() - b.datum.getTime());
 
             return updatedList;
         });
     };
+
 
     return (
         <div className="container-fluid">
@@ -140,10 +158,11 @@ const TestterminTable: React.FC = () => {
                             datum={test.datum}
                             fach={test.fach}
                             stoff={test.stoff}
-                            index={index}
                             days_remaining={calculateDaysRemaining(test.datum)}
-                            onDelete={() => deleteTesttermin(index)}
-                            onEdit={(updatedTest) => editTesttermin(index, updatedTest)}
+                            onDelete={() => deleteTesttermin(test)}
+                            onEdit={(oldTest, updatedTest) => editTesttermin({ ...test }, updatedTest)}
+
+
                         />
                     ))}
                 <tr>
