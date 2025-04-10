@@ -11,7 +11,7 @@ type TestterminData = {
 
 const months = [
     "Januar", "Februar", "März", "April", "Mai", "Juni",
-    "Juli", "August", "September", "O   ktober", "November", "Dezember"
+    "Juli", "August", "September", "Oktober", "November", "Dezember"
 ];
 
 const weekdayLabels = ["Mo", "Di", "Mi", "Do", "Fr"];
@@ -115,6 +115,15 @@ const Calendar: React.FC = () => {
 
     const weekdaysOnly: number[] = [];
     const totalDays = getDaysInMonth(year, month);
+    let daysToSpare = 0;
+    const firstDay = new Date(year, month, 1);
+    daysToSpare = firstDay.getDay() - 1;
+    if(daysToSpare >= 5){
+        daysToSpare = 0;
+    }
+    for(let i = 0; i < daysToSpare;i++){
+        weekdaysOnly.push(0);
+    }
     for (let day = 1; day <= totalDays; day++) {
         const date = new Date(year, month, day);
         const weekday = date.getDay();
@@ -167,12 +176,11 @@ const Calendar: React.FC = () => {
                     </button>
                 </div>
 
-                <div style={{ position: "relative", minHeight: "300px" }}>
+                <div style={{ display: "grid", overflow: "hidden" }}>
                     <AnimatePresence mode="wait" initial={false} custom={direction}>
                         <motion.table
                             key={`${month}-${year}`}
                             className="table table-bordered bg-white w-100"
-                            style={{ position: "absolute", width: "100%", tableLayout: "fixed" }}
                             custom={direction}
                             variants={variants}
                             initial="enter"
@@ -189,6 +197,7 @@ const Calendar: React.FC = () => {
                             </thead>
                             <tbody>
                             {weeks.map((week, wIdx) => (
+
                                 <tr key={wIdx}>
                                     {week.map((day, dIdx) => {
                                         let classes = "align-middle";
@@ -199,7 +208,7 @@ const Calendar: React.FC = () => {
                                         if (isToday(day)) {
                                             style.backgroundColor = "#e9ecef";
                                             classes += " fw-bold";
-                                        } else if (isPast(day)) {
+                                        } else if (isPast(day) || day == 0) {
                                             classes += " text-muted";
                                             style.backgroundColor = "#f8f9fa";
                                         }
@@ -210,7 +219,7 @@ const Calendar: React.FC = () => {
 
                                         return (
                                             <td key={dIdx} className={classes} style={style}>
-                                                <div>{day}</div>
+                                                <div>{day == 0 ? "" : day}</div>
                                                 {termin && (
                                                     <>
                                                         <small className="d-block text-danger">
