@@ -8,7 +8,6 @@ type TestterminData = {
     stoff: string;
 };
 
-
 const localStorageKey = "testtermine";
 
 const loadFromLocalStorage = (): TestterminData[] => {
@@ -62,6 +61,7 @@ const TestterminTable: React.FC = () => {
 
     useEffect(() => {
         localStorage.setItem(localStorageKey, JSON.stringify(testtermine));
+        window.dispatchEvent(new Event("updateTesttermine"));
     }, [testtermine]);
 
     const resetLocalStorage = () => {
@@ -86,6 +86,7 @@ const TestterminTable: React.FC = () => {
 
             // Speichern im localStorage als Array von Objekten, die das Datum als Date-Objekt enthalten
             localStorage.setItem(localStorageKey, JSON.stringify(updatedTests));
+            window.dispatchEvent(new Event("updateTesttermine"));
 
             return updatedTests;
         });
@@ -94,9 +95,6 @@ const TestterminTable: React.FC = () => {
         setNewDatum("");
         setNewStoff("");
     };
-
-
-
 
     const deleteTesttermin = (index: number) => {
         const updatedList = testtermine.filter((_, i) => i !== index);
@@ -112,6 +110,7 @@ const TestterminTable: React.FC = () => {
 
             // Sofortiger Setzen der neuen Werte
             localStorage.setItem(localStorageKey, JSON.stringify(updatedList));
+            window.dispatchEvent(new Event("updateTesttermine"));
 
             // Sortieren nach der Aktualisierung
             updatedList.sort((a, b) => a.datum.getTime() - b.datum.getTime());
@@ -119,7 +118,6 @@ const TestterminTable: React.FC = () => {
             return updatedList;
         });
     };
-
 
     return (
         <div className="container-fluid">

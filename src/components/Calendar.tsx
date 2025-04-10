@@ -1,17 +1,42 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import React from "react";
+
+type TestterminData = {
+    fach: string;
+    datum: Date;
+    stoff: string;
+};
 
 const months = [
     "Januar", "Februar", "März", "April", "Mai", "Juni",
-    "Juli", "August", "September", "Oktober", "November", "Dezember"
+    "Juli", "August", "September", "O   ktober", "November", "Dezember"
 ];
 
 const weekdayLabels = ["Mo", "Di", "Mi", "Do", "Fr"];
 
 const Calendar: React.FC = () => {
+
+
+
+    useEffect(() => {
+        loadTesttermine();
+
+        const handleStorageChange = (event: StorageEvent) => {
+            if (event.key === "testtermine") {
+                loadTesttermine();
+            }
+        };
+
+        window.addEventListener("storage", handleStorageChange);
+        return () => window.removeEventListener("storage", handleStorageChange);
+    }, []);
+
+
     const [currentDate, setCurrentDate] = useState(new Date());
     const [direction, setDirection] = useState<"left" | "right">("right");
+    const [testtermine, setTesttermine] = useState<TestterminData[]>([]);
 
     const today = new Date();
     const year = currentDate.getFullYear();
@@ -41,6 +66,52 @@ const Calendar: React.FC = () => {
         const now = new Date(today.getFullYear(), today.getMonth(), today.getDate());
         return date < now;
     };
+
+    const getTesttermin = (day: number) => {
+        return testtermine.find((termin) => {
+            const date = new Date(termin.datum);
+            return (
+                date.getFullYear() === year &&
+                date.getMonth() === month &&
+                date.getDate() === day
+            );
+        });
+    };
+
+    const loadTesttermine = () => {
+        const saved = localStorage.getItem("testtermine");
+        if (saved) {
+            const parsed: TestterminData[] = JSON.parse(saved).map((t: any) => ({
+                ...t,
+                datum: new Date(t.datum),
+            }));
+            setTesttermine(parsed);
+        } else {
+            setTesttermine([]);
+        }
+    };
+
+    // Beim Laden + auf Events im Storage reagieren
+    useEffect(() => {
+        loadTesttermine();
+
+        const handleStorageChange = () => {
+            loadTesttermine();
+        };
+
+        // Eigener Event für manuelle Updates
+        const handleCustomUpdate = () => {
+            loadTesttermine();
+        };
+
+        window.addEventListener("storage", handleStorageChange);
+        window.addEventListener("updateTesttermine", handleCustomUpdate);
+
+        return () => {
+            window.removeEventListener("storage", handleStorageChange);
+            window.removeEventListener("updateTesttermine", handleCustomUpdate);
+        };
+    }, []);
 
     const weekdaysOnly: number[] = [];
     const totalDays = getDaysInMonth(year, month);
@@ -101,7 +172,7 @@ const Calendar: React.FC = () => {
                         <motion.table
                             key={`${month}-${year}`}
                             className="table table-bordered bg-white w-100"
-                            style={{ position: "absolute", width: "100%" }}
+                            style={{ position: "absolute", width: "100%", tableLayout: "fixed" }}
                             custom={direction}
                             variants={variants}
                             initial="enter"
@@ -123,6 +194,8 @@ const Calendar: React.FC = () => {
                                         let classes = "align-middle";
                                         let style: React.CSSProperties = { height: "80px" };
 
+                                        const termin = getTesttermin(day);
+
                                         if (isToday(day)) {
                                             style.backgroundColor = "#e9ecef";
                                             classes += " fw-bold";
@@ -131,9 +204,23 @@ const Calendar: React.FC = () => {
                                             style.backgroundColor = "#f8f9fa";
                                         }
 
+                                        if (termin) {
+                                            style.border = "2px solid #dc3545";
+                                        }
+
                                         return (
                                             <td key={dIdx} className={classes} style={style}>
-                                                {day}
+                                                <div>{day}</div>
+                                                {termin && (
+                                                    <>
+                                                        <small className="d-block text-danger">
+                                                            {termin.fach}
+                                                        </small>
+                                                        <small className="d-block text-muted" style={{ fontSize: "0.75rem" }}>
+                                                            {termin.stoff}
+                                                        </small>
+                                                    </>
+                                                )}
                                             </td>
                                         );
                                     })}
