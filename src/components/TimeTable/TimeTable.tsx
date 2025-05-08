@@ -7,7 +7,6 @@ import "./TimeTable.css";
 const days = ["Woche", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag"];
 
 const TimeTable: React.FC = () => {
-    const [toggled, setToggled] = useState<boolean>(false);
     const [schedule, setSchedule] = useState<string[][]>([]);
     const [selectedDay, setSelectedDay] = useState<string>("Woche");
 
@@ -47,16 +46,8 @@ const TimeTable: React.FC = () => {
 
     return (
         <div className="container text-center mt-3">
-            <button
-                type="button"
-                className="btn btn-secondary mb-3"
-                onClick={() => setToggled(!toggled)}
-            >
-                Stundenplan einblenden
-            </button>
-
             <AnimatePresence>
-                {toggled && (
+                {
                     <motion.div
                         className="w-100 d-flex flex-column align-items-center"
                         initial={{ opacity: 0, scale: 0.8, y: -20 }}
@@ -130,7 +121,7 @@ const TimeTable: React.FC = () => {
                             </tbody>
                         </motion.table>
                     </motion.div>
-                )}
+                }
             </AnimatePresence>
         </div>
     );

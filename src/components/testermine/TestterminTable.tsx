@@ -1,12 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import Testtermin from "./Testtermin";
 import "./css/TestterminTable.css";
+import { motion, AnimatePresence } from "framer-motion";
+import "../../app.css"
+
 
 type TestterminData = {
     fach: string;
     datum: Date;
     stoff: string;
 };
+
+interface TableProps {
+    addXp: (xp:number) => void
+}
 
 const localStorageKey = "testtermine";
 
@@ -52,12 +59,37 @@ const calculateDaysRemaining = (testDate: Date) => {
     return Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
 };
 
-const TestterminTable: React.FC = () => {
+const TestterminTable: React.FC<TableProps> = (Props) => {
     const [testtermine, setTesttermine] = useState<TestterminData[]>(loadFromLocalStorage());
     const [newFach, setNewFach] = useState("");
     const [newDatum, setNewDatum] = useState("");
     const [newStoff, setNewStoff] = useState("");
     const [showAll, setShowAll] = useState(false);
+    const [xpPopup, setXpPopup] = useState<number | null>(null);
+    const [gradient, setGradient] = useState<string>("");
+    const [colorUsed, setColorUsed] = useState<number>(0);
+    
+    const generateRandomColor = () => {
+        const randomColor = () => {
+            let color = Math.floor(Math.random() * 16777215).toString(16);
+            if(color.length < 6){
+                for(let i = color.length; i < 6; i++){
+                    color = "0" + color;
+                }
+            }else{
+                color = color.slice(0, 6);
+            }
+            return "#" + color;
+        };
+        return `linear-gradient(135deg, ${randomColor()}, ${randomColor()}, ${randomColor()}, ${randomColor()})`;
+    };
+
+
+    const {addXp} = Props;
+
+    useEffect(() => {
+        setGradient(generateRandomColor());
+    }, [colorUsed]);
 
     useEffect(() => {
         localStorage.setItem(localStorageKey, JSON.stringify(testtermine));
@@ -97,20 +129,24 @@ const TestterminTable: React.FC = () => {
     };
 
     const deleteTesttermin = (testToDelete: TestterminData) => {
+        const earnedXp = Math.floor(Math.random() * 50 + 10);
+        addXp(earnedXp);
+        setXpPopup(earnedXp);
+        setColorUsed(colorUsed+1);
+        setTimeout(() => setXpPopup(null), 1500);
+
         const updatedList = testtermine.filter(test =>
             !(test.fach === testToDelete.fach &&
                 test.stoff === testToDelete.stoff &&
                 test.datum.getTime() === testToDelete.datum.getTime())
         );
         setTesttermine(updatedList);
+        localStorage.setItem(localStorageKey, JSON.stringify(updatedList));
     };
 
 
     const editTesttermin = (oldTest: TestterminData, updatedTest: TestterminData) => {
         setTesttermine((prevTests) => {
-
-
-
             const updatedList = prevTests.map((test) => {
                 const isSameTest =
                     test.fach === oldTest.fach &&
@@ -173,6 +209,40 @@ const TestterminTable: React.FC = () => {
                 </tr>
                 </tbody>
             </table>
+            <AnimatePresence>
+                {xpPopup !== null && (
+                    <motion.div
+                        initial={{ opacity: 0, y: -30 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -30 }}
+                        transition={{
+                            duration: 1,
+                            ease: "easeInOut",
+                        }}
+                        style={{
+                            position: "fixed",
+                            top: "80px",
+                            right: "30px",
+                            padding: "12px 24px",
+                            borderRadius: "12px",
+                            fontSize: "18px",
+                            fontWeight: "bold",
+                            color: "white",
+                            zIndex: 1000,
+                            boxShadow: "0 4px 12px rgba(0, 0, 0, 0.2)",
+                            letterSpacing: "0.5px",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            backgroundImage: gradient,
+                            backgroundSize: "200% 200%",
+                            animation: "rainbowAnimation 5s linear infinite",
+                        }}
+                    >
+                        +20 XP 🚀
+                    </motion.div>
+                )}
+            </AnimatePresence>
             <div style={{ display: "flex", gap: "10px", marginBottom: "10px" }}>
                 <button onClick={() => setShowAll(!showAll)}>
                     {showAll ? "Nur Nächste 10 Tage" : "Alle Anzeigen"}

@@ -64,7 +64,7 @@ const Testtermin: React.FC<TestterminProps> = ({ fach = "Kein Fach", datum, stof
                     <td>
                         <button onClick={() => pressEdit()}>Bearbeiten</button>
                         <span> </span>
-                        <button onClick={() => onDelete({ fach, datum, stoff })}>Löschen</button>
+                        <button onClick={() => onDelete({ fach, datum, stoff })}>Fertig</button>
                     </td>
                 </>
             )}
