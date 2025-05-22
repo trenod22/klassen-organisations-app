@@ -161,6 +161,8 @@ const Calendar: React.FC = () => {
         })
     };
 
+
+
     return (
         <div className="container text-center mt-4">
             <div className="bg-light shadow-sm rounded p-4">
@@ -207,15 +209,15 @@ const Calendar: React.FC = () => {
                                         const termin = getTesttermin(day);
 
                                         if (isToday(day)) {
-                                            style.backgroundColor = "#e9ecef";
-                                            classes += " fw-bold";
-                                        } else if (isPast(day) || day == 0) {
+                                            style.backgroundColor = "#e7f1ff"; // soft blue
+                                            classes += " fw-bold text-dark";
+                                        } else if (isPast(day) || day === 0) {
+                                            style.backgroundColor = "#f8f9fa"; // soft gray
                                             classes += " text-muted";
-                                            style.backgroundColor = "#f8f9fa";
                                         }
 
                                         if (termin) {
-                                            style.border = "2px solid #dc3545";
+                                            style.border = "2px solid #0d6efd"; // primary blue
                                         }
 
                                         return (

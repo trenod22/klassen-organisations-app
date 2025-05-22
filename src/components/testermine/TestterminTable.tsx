@@ -68,7 +68,8 @@ const TestterminTable: React.FC<TableProps> = (Props) => {
     const [xpPopup, setXpPopup] = useState<number | null>(null);
     const [gradient, setGradient] = useState<string>("");
     const [colorUsed, setColorUsed] = useState<number>(0);
-    
+    const xp: number = Math.floor(Math.random() * 50 + 10);
+
     const generateRandomColor = () => {
         const randomColor = () => {
             let color = Math.floor(Math.random() * 16777215).toString(16);
@@ -129,9 +130,8 @@ const TestterminTable: React.FC<TableProps> = (Props) => {
     };
 
     const deleteTesttermin = (testToDelete: TestterminData) => {
-        const earnedXp = Math.floor(Math.random() * 50 + 10);
-        addXp(earnedXp);
-        setXpPopup(earnedXp);
+        addXp(xp);
+        setXpPopup(xp);
         setColorUsed(colorUsed+1);
         setTimeout(() => setXpPopup(null), 1500);
 
@@ -175,7 +175,7 @@ const TestterminTable: React.FC<TableProps> = (Props) => {
 
     return (
         <div className="container-fluid">
-            <table className="table w-100">
+            <table className="table w-100 table-bordered shadow-sm rounded">
                 <thead>
                 <tr>
                     <th>Fach</th>
@@ -239,7 +239,7 @@ const TestterminTable: React.FC<TableProps> = (Props) => {
                             animation: "rainbowAnimation 5s linear infinite",
                         }}
                     >
-                        +20 XP 🚀
+                        +{xp} XP 🚀
                     </motion.div>
                 )}
             </AnimatePresence>

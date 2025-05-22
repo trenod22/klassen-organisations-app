@@ -56,7 +56,7 @@ const TimeTable: React.FC = () => {
                         transition={{ duration: 0.6, ease: "easeInOut" }}
                     >
                         <select
-                            className="form-select w-auto mb-3"
+                            className="form-select form-select-sm text-dark bg-light border-secondary mb-3 w-auto"
                             value={selectedDay}
                             onChange={(e) => setSelectedDay(e.target.value)}
                         >
@@ -66,14 +66,14 @@ const TimeTable: React.FC = () => {
                         </select>
                         <button
                             type="button"
-                            className="btn btn-secondary mb-3"
+                            className="btn btn-outline-primary mb-3"
                             onClick={() => resetTimetable()}
                         >
                             Stundentplan zurücksetzen
                         </button>
 
                         <motion.table
-                            className={`table table-striped table-bordered table-hover bg-light shadow-sm rounded ${selectedDay !== "Woche" ? 'w-25' : ''}`}
+                            className={`table table-bordered shadow-sm rounded text-center ${selectedDay !== "Woche" ? 'w-25' : ''}`}
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}

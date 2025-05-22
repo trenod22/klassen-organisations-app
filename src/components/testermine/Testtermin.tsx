@@ -51,8 +51,8 @@ const Testtermin: React.FC<TestterminProps> = ({ fach = "Kein Fach", datum, stof
                     <td><input type="text" value={editedStoff} onChange={(e) => setEditedStoff(e.target.value)} /></td>
                     <td>{days_remaining}</td>
                     <td>
-                        <button onClick={handleSave}>Speichern</button>
-                        <button onClick={() => setIsEditing(false)}>Abbrechen</button>
+                        <button className="btn btn-sm btn-success" onClick={handleSave}>Speichern</button>
+                        <button className="btn btn-sm btn-outline-secondary" onClick={() => setIsEditing(false)}>Abbrechen</button>
                     </td>
                 </>
             ) : (
@@ -62,9 +62,9 @@ const Testtermin: React.FC<TestterminProps> = ({ fach = "Kein Fach", datum, stof
                     <td>{stoff}</td>
                     <td>{days_remaining}</td>
                     <td>
-                        <button onClick={() => pressEdit()}>Bearbeiten</button>
+                        <button className="btn btn-sm btn-primary" onClick={() => pressEdit()}>Bearbeiten</button>
                         <span> </span>
-                        <button onClick={() => onDelete({ fach, datum, stoff })}>Fertig</button>
+                        <button className="btn btn-sm btn-outline-danger" onClick={() => onDelete({ fach, datum, stoff })}>Fertig</button>
                     </td>
                 </>
             )}
