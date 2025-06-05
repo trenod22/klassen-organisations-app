@@ -46,7 +46,8 @@ const initialTesttermine: TestterminData[] = [
     { fach: "WMC_1U", datum: new Date(2025, 4, 21), stoff: "???" },
     { fach: "NSCS_1", datum: new Date(2025, 4, 26), stoff: "???" },
     { fach: "AM", datum: new Date(2025, 4, 28, 0), stoff: "???" },
-    { fach: "DBI1U", datum: new Date(2025, 5, 4), stoff: "???" },
+    { fach: "DBI1U", datum: new Date(2025, 5, 4), stoff: "PLSQL" },
+    { fach: "POS1", datum: new Date(2025, 5, 5), stoff: "JDBC" },
 ];
 
 const calculateDaysRemaining = (testDate: Date) => {
