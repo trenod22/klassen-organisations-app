@@ -5,6 +5,7 @@ import {Level} from "./components/Level.js";
 import TestterminTable from "./components/testermine/TestterminTable.js";
 import {useEffect, useState} from "react";
 import TimeTable from "./components/TimeTable/TimeTable";
+import './app.css';
 
 function App() {
 

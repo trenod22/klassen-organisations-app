@@ -1,0 +1,31 @@
+/* Calendar Grid */
+.calendar {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 1rem;
+}
+
+/* Calendar Day */
+.calendar-day {
+    background-color: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    position: relative;
+    transition: box-shadow 0.3s ease;
+}
+
+.calendar-day:hover {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Event Badge */
+.event-badge {
+    display: inline-block;
+    background-color: #facc15;
+    color: #1f2937;
+    padding: 0.25rem 0.5rem;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    margin-top: 0.5rem;
+}

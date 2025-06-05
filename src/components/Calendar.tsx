@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import 'bootstrap/dist/css/bootstrap.min.css';
+// @ts-ignore
 import React from "react";
+import './Calendar.css';
 
 type TestterminData = {
     fach: string;

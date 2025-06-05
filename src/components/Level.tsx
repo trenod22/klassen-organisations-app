@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import './Level.css';
 
 interface LevelProps {
     setDisplay: (page: string) => void,

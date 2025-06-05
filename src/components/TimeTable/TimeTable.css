@@ -1,0 +1,28 @@
+/* Timetable Grid */
+.timetable {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+/* Timetable Cell */
+.timetable-cell {
+    background-color: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    text-align: center;
+    transition: background-color 0.3s ease;
+}
+
+.timetable-cell:hover {
+    background-color: #f9fafb;
+}
+
+/* Free Period */
+.timetable-cell.free {
+    background-color: #f3f4f6;
+    color: #9ca3af;
+    font-style: italic;
+}
